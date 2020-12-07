@@ -36,10 +36,11 @@ this.day = day;
     public void setLanguage(String language) {
         this.language = language;
     }
+    @Override
     public void printInfo()
     {
-        String info = getTitle()+ ";"+ getPublisher() +";"+ getYear()+";"+getMonth()+";"+getDay()
-                +";"+getLanguage();
+        String info = "Tytul: "+getTitle()+ " wydawnictwo: "+ getPublisher() +" Rok: "+ getYear()+" Miesiąc: "+getMonth()+" Dzień: "+getDay()
+                +" Język: "+getLanguage();
         System.out.println(info);
     }
 }

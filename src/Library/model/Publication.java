@@ -36,4 +36,8 @@ public class Publication {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public void printInfo() {
+
+    }
 }
