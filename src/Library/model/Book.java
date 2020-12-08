@@ -1,6 +1,7 @@
 package Library.model;
 
 import java.time.Year;
+import java.util.Objects;
 
 public class Book extends Publication {
 
@@ -56,14 +57,28 @@ public class Book extends Publication {
         this.isbn = isbn;
     }
 
-    public void printInfo()
-    {
-        String info = "tytuł: "+getTitle() + "; " +"autor: "+ author + "; " + "Data wyadania: "+getYear() + "; "
-                + "ilość stron: "+pages + "; " + "wydawnictwo: "+getPublisher() + "; ";
-        if(isbn != null)
-        {
-            info = info + ";" + "isbn: "+isbn;
-        }
-        System.out.println(info);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Book book = (Book) o;
+        return pages == book.pages &&
+                Objects.equals(author, book.author) &&
+                Objects.equals(isbn, book.isbn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), author, pages, isbn);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+
+                "author='" + author + '\'' +
+                ", pages=" + pages +
+                ", isbn='" + isbn + '\'';
+
     }
 }
