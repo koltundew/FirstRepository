@@ -2,9 +2,15 @@ package Library.io;
 import Library.model.Book;
 import Library.model.Magazine;
 
+import javax.xml.crypto.Data;
 import java.util.Scanner;
 public class DataReader {
     Scanner sc = new Scanner(System.in);
+    private ConsolePrinter printer;
+
+    public DataReader(){
+        this.printer = printer;
+    }
 
     public void close()
     {
@@ -12,11 +18,13 @@ public class DataReader {
     }
     public int getInt()
     {
-        int number = sc.nextInt();
-        sc.nextLine();
-        return number;
+        try{return sc.nextInt();}
+        finally {
+            sc.nextLine();
+        }
+
     }
-    public Book readAndCreate()
+    public Book readAndCreateBook()
     {
         System.out.println("Tytuł: ");
         String title = sc.nextLine();
