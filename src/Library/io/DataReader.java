@@ -8,7 +8,7 @@ public class DataReader {
     Scanner sc = new Scanner(System.in);
     private ConsolePrinter printer;
 
-    public DataReader(){
+    public DataReader(ConsolePrinter printer){
         this.printer = printer;
     }
 
@@ -23,6 +23,9 @@ public class DataReader {
             sc.nextLine();
         }
 
+    }
+    public String getString(){
+        return sc.nextLine();
     }
     public Book readAndCreateBook()
     {

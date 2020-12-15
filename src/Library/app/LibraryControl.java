@@ -1,21 +1,43 @@
 package Library.app;
+import Library.model.Magazine;
 import Library.model.Book;
 import Library.model.Library;
-import Library.io.DataReader;
-import Library.model.Magazine;
-import Library.exception.NoSuchOptionException;
-import Library.io.ConsolePrinter;
 import Library.model.Publication;
+import Library.io.ConsolePrinter;
+import Library.io.DataReader;
+import Library.io.file.FileManager;
+import Library.io.file.FileManagerBuilder;
+import Library.exception.NoSuchOptionException;
+import Library.exception.DataImportException;
+import Library.exception.DataExportEception;
+
+
 
 import java.util.InputMismatchException;
 
 public class LibraryControl {
 
 
-    private DataReader dataReader = new DataReader();
-    private ConsolePrinter printer = new ConsolePrinter();
 
-    private Library library = new Library();
+    private ConsolePrinter printer = new ConsolePrinter();
+    private DataReader dataReader = new DataReader(printer);
+    private FileManager fileManager;
+
+
+
+    private Library library;
+
+    LibraryControl(){
+        fileManager =  new FileManagerBuilder(printer,dataReader).build();
+        try{
+            library = fileManager.importData();
+            printer.printLine("Zaimportowano dane z pliku");
+        }catch (DataImportException e){
+            printer.printLine(e.getMessage());
+            printer.printLine("Zainiocjowano nowa baze");
+            library = new Library();
+        }
+    }
 
 
     void controlLoop() {
@@ -106,8 +128,15 @@ public class LibraryControl {
     }
 
     private void exit() {
-        printer.printLine("Koniec programu , papa");
+        try{
+            fileManager.exportData(library);
+            printer.printLine("Eksport danych do pliku zakonczony powodzeniem");
+        }catch (DataExportEception e){
+            printer.printLine(e.getMessage());
+        }
         dataReader.close();
+        printer.printLine("Koniec programu , papa");
+
     }
 
     private enum Option {
