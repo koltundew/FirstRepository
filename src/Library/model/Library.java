@@ -1,9 +1,10 @@
 package Library.model;
 
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Library {
+public class Library implements Serializable {
     private static final int MAX_PUBLICATIONS = 2000;
     private int publicationNumber;
     private Publication[] publications = new Publication[MAX_PUBLICATIONS];
@@ -16,12 +17,8 @@ public class Library {
         return result;
     }
 
-    public void addBook(Book book)
-    {
-      addPublication(book);
 
-    }
-    private void addPublication(Publication publication){
+    public  void addPublication(Publication publication){
         if(publicationNumber >=MAX_PUBLICATIONS){
             throw new ArrayIndexOutOfBoundsException("Max publications exceeded"+ MAX_PUBLICATIONS);
         }
@@ -29,9 +26,6 @@ public class Library {
         publicationNumber++;
     }
 
-    public void addMagazine(Magazine magazine) {
-        addPublication(magazine);
-    }
 
 
 //    @Override

@@ -9,7 +9,8 @@ import Library.io.file.FileManager;
 import Library.io.file.FileManagerBuilder;
 import Library.exception.NoSuchOptionException;
 import Library.exception.DataImportException;
-import Library.exception.DataExportEception;
+import Library.exception.DataExportException;
+import Library.exception.InvalidDataException;
 
 
 
@@ -98,7 +99,7 @@ public class LibraryControl {
     private void addBook() {
         try {
             Book book = dataReader.readAndCreateBook();
-            library.addBook(book);
+            library.addPublication(book);
         } catch (InputMismatchException e) {
             printer.printLine("Nie udało się utworzyć książki, niepoprawne dane");
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -109,7 +110,7 @@ public class LibraryControl {
     private void addMagazine() {
         try {
             Magazine magazine = dataReader.readAndCreateMagazine();
-            library.addMagazine(magazine);
+            library.addPublication(magazine);
         } catch (InputMismatchException e) {
             printer.printLine("Nie udało się utworzyć magazynu, niepoprawne dane");
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -131,7 +132,7 @@ public class LibraryControl {
         try{
             fileManager.exportData(library);
             printer.printLine("Eksport danych do pliku zakonczony powodzeniem");
-        }catch (DataExportEception e){
+        }catch (DataExportException e){
             printer.printLine(e.getMessage());
         }
         dataReader.close();

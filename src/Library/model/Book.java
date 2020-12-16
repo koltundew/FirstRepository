@@ -5,6 +5,18 @@ import java.util.Objects;
 
 public class Book extends Publication {
 
+    public static final String TYPE = "Książka";
+
+    public String toCsv(){
+        return (TYPE+";")+
+                getTitle()+";"+
+                getPublisher()+";"+
+                getYear()+";"+
+                author+";"+
+                pages+";"+
+                isbn+"";
+    }
+
     String author;
 
     private int pages;

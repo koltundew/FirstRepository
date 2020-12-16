@@ -1,6 +1,7 @@
 package Library.io.file;
+import Library.exception.DataExportException;
 import Library.exception.DataImportException;
-import Library.exception.DataExportEception;
+import Library.exception.DataExportException;
 import Library.model.Library;
 import java.io.*;
 
@@ -15,9 +16,9 @@ public class SerializableFileManager implements FileManager{
         ){
             oos.writeObject(library);
         }catch (FileNotFoundException e){
-            throw new DataExportEception("Brak pliku "+ FILE_NAME);
+            throw new DataExportException("Brak pliku "+ FILE_NAME);
         }catch (IOException e){
-            throw new DataExportEception("Blad zapisu danych do pliku"+ FILE_NAME);
+            throw new DataExportException("Blad zapisu danych do pliku "+ FILE_NAME);
         }
     }
     @Override
@@ -29,9 +30,9 @@ public class SerializableFileManager implements FileManager{
         }catch (FileNotFoundException e){
             throw new DataImportException("Brak pliku "+ FILE_NAME);
         }catch (IOException e){
-            throw new DataImportException("Blad odczytu pliku"+ FILE_NAME);
+            throw new DataImportException("Blad odczytu pliku "+ FILE_NAME);
         }catch(ClassNotFoundException e){
-            throw new DataImportException("Niezgodny typ danych pliku" + FILE_NAME);
+            throw new DataImportException("Niezgodny typ danych pliku " + FILE_NAME);
         }
     }
 

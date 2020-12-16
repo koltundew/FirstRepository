@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class Publication implements Serializable {
+
+    public abstract String toCsv();
+
     private int year;
     private String publisher;
     private String title;
