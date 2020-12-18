@@ -1,4 +1,6 @@
 package Library.app;
+
+
 import Library.model.Magazine;
 import Library.model.Book;
 import Library.model.Library;
@@ -59,6 +61,12 @@ public class LibraryControl {
                     break;
                 case PRINT_MAGAZINES:
                     printMagazines();
+                    break;
+                case DELETE_BOOK:
+                    deleteBook();
+                    break;
+                case DELETE_MAGAZINE:
+                    deleteMagazine();
                     break;
                 case EXIT:
                     exit();
@@ -128,6 +136,28 @@ public class LibraryControl {
         printer.printMagazines(publications);
     }
 
+    private void deleteMagazine(){
+        try{
+            Magazine magazine = dataReader.readAndCreateMagazine();
+            if(library.removePublication(magazine))
+                printer.printLine("Usunięto magazyn");
+            else printer.printLine("Brak wskazanego magazynu");
+        }catch (InputMismatchException e ){
+            printer.printLine("Nie udalo sie utwrzoyc magazynu, niepoprawne dane");
+        }
+    }
+    private void deleteBook(){
+        try{
+            Book book = dataReader.readAndCreateBook();
+            if(library.removePublication(book))
+                printer.printLine("Usunięto książke");
+            else printer.printLine("Brak wskazanego książki");
+        }catch (InputMismatchException e ){
+            printer.printLine("Nie udalo sie utwrzoyc książki, niepoprawne dane");
+        }
+    }
+
+
     private void exit() {
         try{
             fileManager.exportData(library);
@@ -145,7 +175,10 @@ public class LibraryControl {
         ADD_BOOK(1, "Dodanie książki"),
         ADD_MAGAZINE(2, "Dodanie magazynu"),
         PRINT_BOOKS(3, "Wyswietl dostępne książki"),
-        PRINT_MAGAZINES(4, "Wyswietl dostępne magazyny");
+        PRINT_MAGAZINES(4, "Wyswietl dostępne magazyny"),
+        DELETE_BOOK(5, "Usun książke"),
+        DELETE_MAGAZINE(6, "Usuń magazyn");
+
 
         private int value;
         private String description;
@@ -161,13 +194,14 @@ public class LibraryControl {
         }
 
 
-        static  Option createFromInt(int option) throws NoSuchOptionException {
+        static Option createFromInt(int option) throws NoSuchOptionException {
             try {
                 return Option.values()[option];
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new NoSuchOptionException("Brak opcji o id" + option);
             }
         }
+
 
     }
 }
