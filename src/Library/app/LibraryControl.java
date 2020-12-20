@@ -1,6 +1,6 @@
 package Library.app;
 
-
+import Library.model.comparator.AlphabeticalTitleComparator;
 import Library.model.Magazine;
 import Library.model.Book;
 import Library.model.Library;
@@ -15,7 +15,7 @@ import Library.exception.DataExportException;
 import Library.exception.InvalidDataException;
 
 
-
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 public class LibraryControl {
@@ -127,13 +127,19 @@ public class LibraryControl {
     }
 
     private void printBooks() {
-        Publication[] publications = library.getPublications();
+        Publication[] publications = getSortedPublications();
         printer.printBooks(publications);
     }
 
     private void printMagazines() {
-        Publication[] publications = library.getPublications();
+        Publication[] publications = getSortedPublications();
         printer.printMagazines(publications);
+    }
+
+    private Publication[] getSortedPublications(){
+        Publication[] publications = library.getPublications();
+        Arrays.sort(publications, new AlphabeticalTitleComparator());
+        return publications;
     }
 
     private void deleteMagazine(){
