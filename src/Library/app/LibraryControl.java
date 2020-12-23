@@ -1,18 +1,12 @@
 package Library.app;
 
+import Library.exception.*;
+import Library.model.*;
 import Library.model.comparator.AlphabeticalTitleComparator;
-import Library.model.Magazine;
-import Library.model.Book;
-import Library.model.Library;
-import Library.model.Publication;
 import Library.io.ConsolePrinter;
 import Library.io.DataReader;
 import Library.io.file.FileManager;
 import Library.io.file.FileManagerBuilder;
-import Library.exception.NoSuchOptionException;
-import Library.exception.DataImportException;
-import Library.exception.DataExportException;
-import Library.exception.InvalidDataException;
 
 
 import java.util.Arrays;
@@ -67,6 +61,12 @@ public class LibraryControl {
                     break;
                 case DELETE_MAGAZINE:
                     deleteMagazine();
+                    break;
+                case ADD_USER:
+                    addUser();
+                    break;
+                case PRINT_USER:
+                    printUsers();
                     break;
                 case EXIT:
                     exit();
@@ -125,22 +125,32 @@ public class LibraryControl {
             printer.printLine("Osiągnieto limit pojemności, nie można dodać kolejnego magazynu");
         }
     }
+    private void addUser(){
+        LibraryUser libraryUser = dataReader.createLibraryUser();
+        try{
+            library.addUser(libraryUser);
+        }catch (UserAlreadyExistException e){
+            printer.printLine(e.getMessage());
+        }
+    }
 
     private void printBooks() {
-        Publication[] publications = getSortedPublications();
-        printer.printBooks(publications);
+        printer.printBooks(library.getPublications().values());
     }
 
     private void printMagazines() {
-        Publication[] publications = getSortedPublications();
-        printer.printMagazines(publications);
+        printer.printMagazines(library.getPublications().values());
     }
 
-    private Publication[] getSortedPublications(){
-        Publication[] publications = library.getPublications();
-        Arrays.sort(publications, new AlphabeticalTitleComparator());
-        return publications;
+    private void printUsers(){
+        printer.printUsers(library.getUsers().values());
     }
+
+//    private Publication[] getSortedPublications(){
+//        Publication[] publications = library.getPublications();
+//        Arrays.sort(publications, new AlphabeticalTitleComparator());
+//        return publications;
+//    }
 
     private void deleteMagazine(){
         try{
@@ -177,13 +187,17 @@ public class LibraryControl {
     }
 
     private enum Option {
+
         EXIT(0, "Wyjście z prorgamu"),
         ADD_BOOK(1, "Dodanie książki"),
         ADD_MAGAZINE(2, "Dodanie magazynu"),
         PRINT_BOOKS(3, "Wyswietl dostępne książki"),
         PRINT_MAGAZINES(4, "Wyswietl dostępne magazyny"),
         DELETE_BOOK(5, "Usun książke"),
-        DELETE_MAGAZINE(6, "Usuń magazyn");
+        DELETE_MAGAZINE(6, "Usun magazyn"),
+        ADD_USER(7, "Dodaj czytelnika"),
+        PRINT_USER(8, "Wyświetl czytelników");
+
 
 
         private int value;

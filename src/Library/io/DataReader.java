@@ -1,11 +1,12 @@
 package Library.io;
 import Library.model.Book;
+import Library.model.LibraryUser;
 import Library.model.Magazine;
 
 import javax.xml.crypto.Data;
 import java.util.Scanner;
 public class DataReader {
-    Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
     private ConsolePrinter printer;
 
     public DataReader(ConsolePrinter printer){
@@ -61,6 +62,15 @@ public class DataReader {
         int day = sc.nextInt();
 
         return new Magazine(title,publisher,language,year,month,day);
+    }
+    public LibraryUser createLibraryUser(){
+        printer.printLine("Imie: ");
+        String firstName = sc.nextLine();
+        printer.printLine("Nazwisko");
+        String lastName = sc.nextLine();
+        printer.printLine("Pesel: ");
+        String pesel = sc.nextLine();
+        return new LibraryUser(firstName,lastName,pesel);
     }
 
 }

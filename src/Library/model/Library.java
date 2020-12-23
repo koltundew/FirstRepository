@@ -1,61 +1,53 @@
 package Library.model;
+ import Library.exception.PublicationAlreadyExistsException;
+ import Library.exception.UserAlreadyExistException;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
 public class Library implements Serializable {
-    private static final int INITIAL_CAPACITY = 1;
-    private int publicationNumber;
-    private Publication[] publications = new Publication[INITIAL_CAPACITY];
+    private Map<String,Publication>publications = new HashMap<>();
 
-    public Publication[] getPublications() {
-        Publication[] result = new Publication[publicationNumber];
-        for (int i = 0; i < publicationNumber; i++) {
-            result[i] = publications[i];
-        }
-        return result;
+
+    private Map<String,LibraryUser>users = new HashMap<>();
+
+
+    public Map<String,Publication>getPublications(){
+        return publications;
     }
 
 
-    public void addPublication(Publication publication) {
-        if (publicationNumber == publications.length) {
-            publications = Arrays.copyOf(publications, publications.length * 2);
-        }
-        publications[publicationNumber] = publication;
-        publicationNumber++;
+
+    public Map<String,LibraryUser>getUsers(){
+        return users;
     }
 
-    public boolean removePublication(Publication pub) {
-        final int NOT_FOUND = -1;
-        int found = NOT_FOUND;
-        int i = 0;
-        while (i < publications.length && found == NOT_FOUND) {
-            if (pub.equals(publications[i])) {
-                found = i;
-            } else {
-                i++;
-            }
-        }
+    public void addUser(LibraryUser user){
+        if(users.containsKey(user.getPesel()))
+            throw new UserAlreadyExistException
+                    ("Uzytkownik ze wskazanym peselem już istnieje" + user.getPesel());
+        users.put(user.getPesel(),user);
+    }
 
-        if (found != NOT_FOUND) {
-            System.arraycopy(publications, found + 1, publications, found, publications.length - found - 1);
-            publicationNumber++;
+    public void addPublication(Publication publication){
+        if(publications.containsKey(publication.getTitle()))
+            throw new PublicationAlreadyExistsException
+                    ("Publikacja o takim tytule już istnieje "+ publication.getTitle());
+        publications.put(publication.getTitle(),publication);
+    }
+
+    public boolean removePublication(Publication publication){
+        if(publications.containsValue(publication)){
+            publications.remove(publication.getTitle());
+            return true;
+        }else{
+            return false;
         }
-        return found != NOT_FOUND;
     }
 }
 
 
-
-//
-//    @Override
-//    public String toString() {
-//        StringBuilder builder = new StringBuilder();
-//        for(int i =0; i<publicationNumber; i++){
-//            builder.append(publications[i]);
-//            builder.append("\n");
-//        }
-//        return builder.toString();
-//    }
 
