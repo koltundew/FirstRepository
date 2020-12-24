@@ -3,9 +3,7 @@ package Library.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Publication implements Serializable, Comparable <Publication> {
-
-    public abstract String toCsv();
+public abstract class Publication implements Serializable, Comparable <Publication>,CsvConvertible {
 
     private int year;
     private String publisher;
@@ -71,5 +69,7 @@ public abstract class Publication implements Serializable, Comparable <Publicati
     public int compareTo(Publication p){
         return title.compareToIgnoreCase(p.title);
     }
+
+
 
 }

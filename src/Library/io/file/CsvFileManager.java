@@ -29,30 +29,29 @@ public class CsvFileManager implements FileManager {
     }
 
     public void exportPublications(Library library) {
-        Collection<Publication> publications = library.getPublications().values();
-        try (FileWriter fileWriter = new FileWriter(PUBLICATIONS_FILE_NAME);
-             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-            for (Publication publication : publications) {
-                bufferedWriter.write(publication.toCsv());
-                bufferedWriter.newLine();
-            }
-        } catch (IOException e) {
-            throw new DataExportException("Błąd zapisu danych do pliku " + PUBLICATIONS_FILE_NAME);
-        }
+     Collection<Publication>publications = library.getPublications().values();
+     exportToCsv(publications,PUBLICATIONS_FILE_NAME);
     }
 
     private void exportUsers(Library library) {
-        Collection<LibraryUser> users = library.getUsers().values();
-        try (FileWriter fileWriter = new FileWriter(USERS_FILE_NAME);
-             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-            for (LibraryUser libUser : users) {
-                bufferedWriter.write(libUser.toCsv());
+     Collection<LibraryUser>users = library.getUsers().values();
+     exportToCsv(users,USERS_FILE_NAME);
+    }
+
+    private <T extends CsvConvertible> void exportToCsv(Collection<T>collection,String fileName){
+        try(FileWriter fileWriter = new FileWriter(fileName);
+        BufferedWriter bufferedWriter  = new BufferedWriter(fileWriter)) {
+            for(T element : collection){
+                bufferedWriter.write(element.toCsv());
                 bufferedWriter.newLine();
             }
-        } catch (IOException e) {
-            throw new DataExportException("Błąd zapisu do pliku " + USERS_FILE_NAME);
+        }catch (IOException e){
+            throw new DataExportException("Blad zapisu danych do pliku "+ fileName);
         }
     }
+
+
+
 
 
     private Publication createObjectFromString(String csvText) {
@@ -106,7 +105,7 @@ public class CsvFileManager implements FileManager {
         try (Scanner fileReader = new Scanner(new File(USERS_FILE_NAME))) {
             while (fileReader.hasNextLine()) {
                 String line = fileReader.nextLine();
-                LibraryUser libUser = createObjectFromString(line);
+                LibraryUser libUser= createUserFromString(line);
                 library.addUser(libUser);
             }
         } catch (FileNotFoundException e) {
